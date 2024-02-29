@@ -1,6 +1,7 @@
 #include "scheduler.h"
 
-#define PROCESSI_MAX 10
+#define PROCESSI_MAX 5
+#define SPAWN_RATE 13 //max 32767
 
 int main(){
     processo **coda = NULL;
@@ -12,13 +13,12 @@ int main(){
     int processoInEsecuzione = 0;
     int attesaTotale = 0;
     float mediaAttesa;
-    int isDone = 0;
 
     srand(time(NULL));
 
     while(processiTerminati < PROCESSI_MAX){
         //generatore di processi
-        if (!(rand() % 7) && processiAttivi < PROCESSI_MAX && ultimoControllo != NOW)
+        if (!(rand() % SPAWN_RATE) && processiAttivi < PROCESSI_MAX && ultimoControllo != NOW)
         {
             if (processiAttivi == 0) start = NOW;
             //aumento la dimensione della coda
@@ -64,7 +64,6 @@ int main(){
             }
             ultimoControllo = NOW;
         }
-
 
         if ((processiAttivi - processiTerminati) > 0 && coda[processoInEsecuzione]->status == DONE) {
             processoInEsecuzione++;

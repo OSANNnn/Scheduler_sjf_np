@@ -11,7 +11,7 @@
 
 #define READY ' '
 #define RUNNING '>'
-#define DONE '*'
+#define DONE 'x'
 
 typedef struct {
     int ID;
