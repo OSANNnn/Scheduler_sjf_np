@@ -22,7 +22,7 @@ int main(){
             //istanzio processo
             processiAttivi++;
 
-            if (processiAttivi > 1){
+            if (processiAttivi > 2){
             //ordino i processi
             }
         }
@@ -38,7 +38,7 @@ int main(){
         if (coda[processoInEsecuzione]->tempoRimanente == 0){
             coda[processoInEsecuzione]->status = DONE;
             processoInEsecuzione++;
-            coda[processoInEsecuzione]->status = '>';
+            coda[processoInEsecuzione]->status = RUNNING;
             processiTerminati++;
         }
 

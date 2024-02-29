@@ -18,8 +18,10 @@ typedef struct {
 } processo;
 
 
-processo* istanziaProcessi(const int ID, time_t inizioCoda);
+void aumentacoda(processo **coda, int processiAttivi);
 
-void ordinaProcessi(processo **coda, const int inizio, const int lunghezzaCoda);
+processo* istanziaprocessi(const int ID, time_t inizioCoda);
 
-void stampaProcessi(processo *process, const int processoInEsecuzione, const int lunghezzaCoda);
+void ordinaprocessi(processo **coda, const int inizio, const int lunghezzaCoda);
+
+void stampaprocessi(processo *process, const int processoInEsecuzione, const int lunghezzaCoda);
