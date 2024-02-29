@@ -7,7 +7,7 @@
 #define NOW time(NULL)
 
 #define MIN_TIME 4
-#define MAX_TIME 8
+#define MAX_TIME 10
 
 #define READY ' '
 #define RUNNING '>'

@@ -1,6 +1,6 @@
 #include "scheduler.h"
 
-#define PROCESSI_MAX 5
+#define PROCESSI_MAX 10
 
 int main(){
     processo **coda = NULL;
@@ -12,12 +12,13 @@ int main(){
     int processoInEsecuzione = 0;
     int attesaTotale = 0;
     float mediaAttesa;
+    int isDone = 0;
 
     srand(time(NULL));
 
     while(processiTerminati < PROCESSI_MAX){
         //generatore di processi
-        if (!(rand() % 3) && processiAttivi < PROCESSI_MAX && ultimoControllo != NOW)
+        if (!(rand() % 7) && processiAttivi < PROCESSI_MAX && ultimoControllo != NOW)
         {
             if (processiAttivi == 0) start = NOW;
             //aumento la dimensione della coda
@@ -43,7 +44,7 @@ int main(){
         if (NOW != ultimoControllo){    
             printf("\e[1;1H\e[2J");
             tempoTrascorso = NOW - start;
-            printf("processi attivi: %d\n", processiAttivi);
+            printf("Processi attivi: %d\n\n", processiAttivi);
 
             if (processiAttivi == 0){
                 printf("Nessun processo attivo...");
@@ -56,7 +57,7 @@ int main(){
                 if(coda[processoInEsecuzione]->tempoRimanente != 0)
                     coda[processoInEsecuzione]->tempoRimanente -= 1;
 
-                if (coda[processoInEsecuzione]->tempoRimanente == 0 && processiTerminati <= processiAttivi){
+                if (coda[processoInEsecuzione]->tempoRimanente == 0 && coda[processoInEsecuzione]->status != DONE){
                     coda[processoInEsecuzione]->status = DONE;
                     processiTerminati++;
                 }
@@ -64,9 +65,10 @@ int main(){
             ultimoControllo = NOW;
         }
 
+
         if ((processiAttivi - processiTerminati) > 0 && coda[processoInEsecuzione]->status == DONE) {
             processoInEsecuzione++;
-            coda[processoInEsecuzione]->status = RUNNING;
+            coda[processoInEsecuzione]->status = RUNNING;          
         }
     }
     //calcolo della durata dell'attesa a partire dall'arrivo del secondo processo
@@ -80,10 +82,11 @@ int main(){
     }
     mediaAttesa = (float) attesaTotale / PROCESSI_MAX;
     //stampo la lista 
-    _sleep(1);
     printf("\e[1;1H\e[2J");
     stampaprocessi(coda, processiAttivi);    
     printf("Attesa media: %.2f\n", mediaAttesa);
+
+    printf("\nPremi un tasto per uscire... ");
     while(!getchar());
 
     free(coda);

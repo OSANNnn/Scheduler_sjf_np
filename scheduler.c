@@ -44,8 +44,8 @@ void ordinaprocessi(processo **coda, const int inizio, const int lunghezzaCoda)
 
 void stampaprocessi(processo **process, const int lunghezzaCoda)
 {
-    printf(" ID\tArrivo\tDurata\tTempo Rimanente\n");
+    printf("  ID\t|    Arrivo\t|\tDurata\t|Tempo Rimanente|\n");
     for (int i = 0; i < lunghezzaCoda; i++){
-        printf(" %c%d\t%d\t%d\t%d\n",process[i]->status, process[i]->ID, process[i]->tempoArrivo, process[i]->durata, process[i]->tempoRimanente);
+        printf("%c %d\t|\t%d\t|\t%d\t|\t%d\t|\n",process[i]->status, process[i]->ID, process[i]->tempoArrivo, process[i]->durata, process[i]->tempoRimanente);
     }
 }
