@@ -16,44 +16,75 @@ int main(){
     srand(time(NULL));
 
     while(processiTerminati < PROCESSI_MAX){
-
-        if (rand() % 3 && processiAttivi < PROCESSI_MAX){
-            if (processiAttivi = 0) start = NOW;
-
+        //generatore di processi
+        if (!(rand() % 3) && processiAttivi < PROCESSI_MAX && ultimoControllo != NOW)
+        {
+            if (processiAttivi == 0) start = NOW;
+            //aumento la dimensione della coda
             coda = (processo**) realloc(coda, sizeof(processo*) * (processiAttivi + 1));
-            
+            //istanzio processo
             *(coda + processiAttivi) = istanziaprocesso(processiAttivi, start);
 
-            if (coda == NULL){
+            if (coda == NULL || *(coda + processiAttivi) == NULL){
                 printf("Errore nell'allocazione di memoria.\n\n");
                 printf("Premi un tasto per uscire...");
                 while(!getchar());
                 return -1;
             }
-            //istanzio processo
             processiAttivi++;
 
             if (processiAttivi > 2){
             //ordino i processi
+                ordinaprocessi(coda, processoInEsecuzione, processiAttivi);
             }
+                        
         }
-
-        if (NOW != ultimoControllo){
-            system("clear");
+        //visualizzazione
+        if (NOW != ultimoControllo){    
+            printf("\e[1;1H\e[2J");
             tempoTrascorso = NOW - start;
-            //stampo la tabella
+            printf("processi attivi: %d\n", processiAttivi);
+
+            if (processiAttivi == 0){
+                printf("Nessun processo attivo...");
+            }
+            else{
+                //stampo la tabella
+                stampaprocessi(coda, processiAttivi);
+                printf("Tempo trascorso: %ld\n", tempoTrascorso);
+                
+                if(coda[processoInEsecuzione]->tempoRimanente != 0)
+                    coda[processoInEsecuzione]->tempoRimanente -= 1;
+
+                if (coda[processoInEsecuzione]->tempoRimanente == 0 && processiTerminati <= processiAttivi){
+                    coda[processoInEsecuzione]->status = DONE;
+                    processiTerminati++;
+                }
+            }
             ultimoControllo = NOW;
-            coda[processoInEsecuzione]->tempoRimanente--;
         }
 
-        if (coda[processoInEsecuzione]->tempoRimanente == 0){
-            coda[processoInEsecuzione]->status = DONE;
+        if ((processiAttivi - processiTerminati) > 0 && coda[processoInEsecuzione]->status == DONE) {
             processoInEsecuzione++;
             coda[processoInEsecuzione]->status = RUNNING;
-            processiTerminati++;
         }
-
     }
+    //calcolo della durata dell'attesa a partire dall'arrivo del secondo processo
+    for (int i = 1; i < PROCESSI_MAX - 1; i++){
+        if (i == 1){
+            attesaTotale = coda[0]->durata - coda[1]->tempoArrivo;
+        }
+        else{
+            attesaTotale += coda[i]->durata;
+        }
+    }
+    mediaAttesa = (float) attesaTotale / PROCESSI_MAX;
+    //stampo la lista 
+    _sleep(1);
+    printf("\e[1;1H\e[2J");
+    stampaprocessi(coda, processiAttivi);    
+    printf("Attesa media: %.2f\n", mediaAttesa);
+    while(!getchar());
 
     free(coda);
     return 0;

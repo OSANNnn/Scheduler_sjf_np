@@ -5,9 +5,13 @@
 #include <time.h>
 
 #define NOW time(NULL)
+
+#define MIN_TIME 4
+#define MAX_TIME 8
+
 #define READY ' '
 #define RUNNING '>'
-#define DONE 'T'
+#define DONE '*'
 
 typedef struct {
     int ID;
@@ -21,4 +25,4 @@ processo* istanziaprocesso(const int ID, time_t inizioCoda);
 
 void ordinaprocessi(processo **coda, const int inizio, const int lunghezzaCoda);
 
-void stampaprocessi(processo *process, const int processoInEsecuzione, const int lunghezzaCoda);
+void stampaprocessi(processo **process, const int lunghezzaCoda);
