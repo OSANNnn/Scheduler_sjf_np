@@ -3,7 +3,7 @@
 #define PROCESSI_MAX 5
 
 int main(){
-    processo **coda;
+    processo **coda = NULL;
     time_t start;
     time_t ultimoControllo = NOW;
     time_t tempoTrascorso;
@@ -19,6 +19,17 @@ int main(){
 
         if (rand() % 3 && processiAttivi < PROCESSI_MAX){
             if (processiAttivi = 0) start = NOW;
+
+            coda = (processo**) realloc(coda, sizeof(processo*) * (processiAttivi + 1));
+            
+            *(coda + processiAttivi) = istanziaprocesso(processiAttivi, start);
+
+            if (coda == NULL){
+                printf("Errore nell'allocazione di memoria.\n\n");
+                printf("Premi un tasto per uscire...");
+                while(!getchar());
+                return -1;
+            }
             //istanzio processo
             processiAttivi++;
 

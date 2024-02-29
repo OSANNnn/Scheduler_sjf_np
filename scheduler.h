@@ -17,10 +17,7 @@ typedef struct {
     char status;
 } processo;
 
-
-void aumentacoda(processo **coda, int processiAttivi);
-
-processo* istanziaprocessi(const int ID, time_t inizioCoda);
+processo* istanziaprocesso(const int ID, time_t inizioCoda);
 
 void ordinaprocessi(processo **coda, const int inizio, const int lunghezzaCoda);
 
