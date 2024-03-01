@@ -1,7 +1,7 @@
 #include "scheduler.h"
 
 #define PROCESSI_MAX 5
-#define SPAWN_RATE 13 //max 32767
+#define SPAWN_RATE 8 //max 32767
 
 int main(){
     processo **coda = NULL;
@@ -44,12 +44,12 @@ int main(){
         if (NOW != ultimoControllo){    
             printf("\e[1;1H\e[2J");
             tempoTrascorso = NOW - start;
-            printf("Processi attivi: %d\n\n", processiAttivi);
 
             if (processiAttivi == 0){
                 printf("Nessun processo attivo...");
             }
             else{
+                printf("Processi attivati: %d\n\n", processiAttivi);
                 //stampo la tabella
                 stampaprocessi(coda, processiAttivi);
                 printf("Tempo trascorso: %ld\n", tempoTrascorso);
@@ -81,6 +81,7 @@ int main(){
     }
     mediaAttesa = (float) attesaTotale / PROCESSI_MAX;
     //stampo la lista 
+    while (NOW == ultimoControllo);
     printf("\e[1;1H\e[2J");
     stampaprocessi(coda, processiAttivi);    
     printf("Attesa media: %.2f\n", mediaAttesa);
